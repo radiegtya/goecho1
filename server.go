@@ -10,7 +10,16 @@ import (
 
 func main() {
 	e := echo.New()
-	client := microgen.NewClient("033506d6-9742-4298-855a-fb19974b6c75", microgen.DefaultURL())
+	client := microgen.NewClient("1dbc2a74-60c6-4f64-92bc-b311a26164df", microgen.DefaultURL())
+	
+	e.GET("", func(c echo.Context) error {
+		resp, err := client.Service("products").Find()
+		if err != nil {
+			return c.JSON(http.StatusNonAuthoritativeInfo, err)
+		}
+
+		return c.JSON(http.StatusOK, resp.Data)
+	})
 
 	songsRoutes := e.Group("/songs")
 
